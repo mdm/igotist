@@ -113,9 +113,13 @@
         fill: stone.color
       )
 <<<<<<< HEAD
+<<<<<<< HEAD
     }
 =======
     }   
 >>>>>>> ae5d547 (Draw board and stones)
+=======
+    }
+>>>>>>> 60d19d3 (Add coordinate normalization)
   })
 }
