@@ -112,6 +112,10 @@
         stroke: diagram.linewidth,
         fill: stone.color
       )
+<<<<<<< HEAD
     }
+=======
+    }   
+>>>>>>> ae5d547 (Draw board and stones)
   })
 }
