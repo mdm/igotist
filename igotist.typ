@@ -1,7 +1,7 @@
 #import "@preview/cetz:0.2.0"
 
-#let makediagram() = {
-  (
+#let makediagram(key) = {
+  state(key,(
     boardsize: 19,
     diagramsize: 9.5cm,
     linewidth: 0.75pt,
@@ -15,7 +15,7 @@
       (position: (3, 15), label: "A"),
       (position: (15, 3), label: "B")
     )
-  )
+  ))
 }
 
 #let normalizecoordinates(..coordinates, skip-i: false) = {
@@ -47,27 +47,21 @@
   })
 }
 
-#let updatediagram(diagram, ..updates) = {
-  let updated = (:)
-  for (key, value) in diagram.pairs() {
-    updated.insert(key, value)
-  }
-  for (key, value) in updates.named().pairs() {
-    updated.insert(key, value)
-  }
-  updated
-}
-
 #let addstones(diagram, ..stones, color: black, skip-i: false) = {
   let stones = normalizecoordinates(..stones.pos(), skip-i: skip-i)
   let stones = stones.map(stone => {
     (color: color, position: stone)
-  })  
+  })
 
-  updatediagram(diagram, stones: diagram.stones + stones)
+  diagram.update(diagram => {
+    diagram.stones = diagram.stones + stones
+    diagram
+  })
 }
 
-#let showdiagram(diagram) = {
+#let showdiagram(diagram) = context {
+  let diagram = diagram.get()
+
   cetz.canvas(length: diagram.diagramsize / diagram.boardsize, {
     import cetz.draw: *
 
