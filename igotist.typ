@@ -11,9 +11,10 @@
       (color: white, position: (15, 15)),
       (color: white, position: (15, 16)),
     ),
-    labels: (
-      (position: (3, 15), label: "A"),
-      (position: (15, 3), label: "B")
+    labels: (),
+    marks: (
+      (position: (15, 15), mark: "triangle"),
+      (position: (3, 3), mark: "square")
     )
   ))
 }
@@ -57,6 +58,36 @@
     diagram.stones = diagram.stones + stones
     diagram
   })
+}
+
+#let addlabels(diagram, ..labels, uppercase: true, skip-i: false) = {
+  let letters = if uppercase { "ABCDEFGHIJKLMNOPQRSTUVWXYZ" } else { "abcdefghijklmnopqrstuvwxyz" }
+  let labels = normalizecoordinates(..labels.pos(), skip-i: skip-i)
+  let labels = labels.enumerate().map(label => {
+    let (i, label) = label  
+    (position: label, label: letters.at(i))
+  })
+
+  diagram.update(diagram => {
+    diagram.labels = diagram.labels + labels
+    diagram
+  })
+}
+
+#let addmarks(diagram, ..marks, style: "triangle", skip-i: false) = {
+  let marks = normalizecoordinates(..marks.pos(), skip-i: skip-i)
+  let marks = marks.map(mark => {
+    (position: mark, mark: style)
+  })
+
+  diagram.update(diagram => {
+    diagram.marks = diagram.marks + marks
+    diagram
+  })
+}
+
+#let copydiagram(diagram, key) = {
+  state(key, diagram.get())
 }
 
 #let showdiagram(diagram) = context {
