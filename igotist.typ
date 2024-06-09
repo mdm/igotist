@@ -13,8 +13,8 @@
     ),
     labels: (),
     marks: (
-      (position: (15, 15), mark: "triangle"),
-      (position: (3, 3), mark: "square")
+      (position: (15, 15), type: "triangle"),
+      (position: (3, 3), type: "square")
     )
   ))
 }
@@ -74,10 +74,10 @@
   })
 }
 
-#let addmarks(diagram, ..marks, style: "triangle", skip-i: false) = {
+#let addmarks(diagram, ..marks, type: "triangle", skip-i: false) = {
   let marks = normalizecoordinates(..marks.pos(), skip-i: skip-i)
   let marks = marks.map(mark => {
-    (position: mark, mark: style)
+    (position: mark, type: type)
   })
 
   diagram.update(diagram => {
@@ -128,13 +128,37 @@
       move-to(mark.position)
       let radius = radius - 1pt
       let stroke = diagram.linewidth + if stone != none and stone.color == black { white } else { black }
-      line(
-        (rel: (90deg, radius), update: false),
-        (rel: (210deg, radius), update: false),
-        (rel: (330deg, radius), update: false),
-        close: true,
-        stroke: stroke
-      )
+      if mark.type == "triangle" {
+        line(
+          (rel: (90deg, radius), update: false),
+          (rel: (210deg, radius), update: false),
+          (rel: (330deg, radius), update: false),
+          close: true,
+          stroke: stroke
+        )
+      }
+      if mark.type == "square" {
+        line(
+          (rel: (45deg, radius), update: false),
+          (rel: (135deg, radius), update: false),
+          (rel: (225deg, radius), update: false),
+          (rel: (315deg, radius), update: false),
+          close: true,
+          stroke: stroke
+        )
+      }
+      if mark.type == "cross" {
+        line(
+          (rel: (45deg, radius), update: false),
+          (rel: (225deg, radius), update: false),
+          stroke: stroke
+        )
+        line(
+          (rel: (135deg, radius), update: false),
+          (rel: (315deg, radius), update: false),
+          stroke: stroke
+        )
+      }
     }
   })
 }
