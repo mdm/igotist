@@ -112,14 +112,29 @@
         stroke: diagram.linewidth,
         fill: stone.color
       )
-<<<<<<< HEAD
-<<<<<<< HEAD
     }
-=======
-    }   
->>>>>>> ae5d547 (Draw board and stones)
-=======
+
+    for mark in diagram.marks {
+      let radius = diagram.diagramsize / diagram.boardsize / 2 - diagram.linewidth / 2
+      let stone = diagram.stones.find(s => s.position == mark.position)
+      if stone == none {
+        circle(
+          mark.position,
+          radius: radius,
+          stroke: none,
+          fill: white
+        )
+      }
+      move-to(mark.position)
+      let radius = radius - 1pt
+      let stroke = diagram.linewidth + if stone != none and stone.color == black { white } else { black }
+      line(
+        (rel: (90deg, radius), update: false),
+        (rel: (210deg, radius), update: false),
+        (rel: (330deg, radius), update: false),
+        close: true,
+        stroke: stroke
+      )
     }
->>>>>>> 60d19d3 (Add coordinate normalization)
   })
 }

@@ -4,5 +4,6 @@
 
 #let diagram = igotist.makediagram("diag1")
 #igotist.addstones(diagram, "d16", "e16", color: white)
-#igotist.addlabels(diagram, "16-4", "4-16")
+// #igotist.addlabels(diagram, "16-4", "4-16")
+#igotist.addmarks(diagram, "16-4", "4-16")
 #igotist.showdiagram(diagram)
