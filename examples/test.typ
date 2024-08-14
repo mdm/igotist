@@ -7,5 +7,6 @@
 // #igotist.addlabels(diagram, "16-4", "4-16")
 #igotist.addmarks(diagram, "16-4", "4-16")
 #igotist.addmarks(diagram, "4-10", "3-10", type: "cross")
+#igotist.addstones(diagram, "3-10", color: black)
 #igotist.showdiagram(diagram)
 #context diagram.get().marks.first().keys()

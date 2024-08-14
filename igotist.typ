@@ -11,6 +11,7 @@
       (color: white, position: (15, 15)),
       (color: white, position: (15, 16)),
     ),
+    numbers: (),
     labels: (),
     marks: (
       (position: (15, 15), type: "triangle"),
@@ -56,6 +57,28 @@
 
   diagram.update(diagram => {
     diagram.stones = diagram.stones + stones
+    diagram
+  })
+}
+
+#let addmoves(diagram, ..moves, start: 1, sente: black, skip-i: false) = {
+  let moves = normalizecoordinates(..moves.pos(), skip-i: skip-i)
+  let moves = moves.enumerate().map(move => {
+    let (i, move) = move
+    if sente == black {
+      let color = if calc.even(i) { black } else { white }
+    } else {
+      let color = if calc.even(i) { white } else { black }
+    }
+    (color: color, position: move)
+  })
+  let numbers = range(start, start + moves.len() + 1).map(number => {
+    (position: number, number: number)
+  })
+
+  diagram.update(diagram => {
+    diagram.moves = diagram.moves + moves
+    diagram.numbers = diagram.numbers + numbers
     diagram
   })
 }
@@ -121,7 +144,7 @@
         circle(
           mark.position,
           radius: radius,
-          stroke: none,
+          stroke: white,
           fill: white
         )
       }
