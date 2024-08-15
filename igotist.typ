@@ -65,19 +65,19 @@
   let moves = normalizecoordinates(..moves.pos(), skip-i: skip-i)
   let moves = moves.enumerate().map(move => {
     let (i, move) = move
-    if sente == black {
-      let color = if calc.even(i) { black } else { white }
+    let color = if sente == black {
+      if calc.even(i) { black } else { white }
     } else {
-      let color = if calc.even(i) { white } else { black }
+      if calc.even(i) { white } else { black }
     }
     (color: color, position: move)
   })
-  let numbers = range(start, start + moves.len() + 1).map(number => {
-    (position: number, number: number)
+  let numbers = range(start, start + moves.len()).map(number => {
+    (position: moves.at(number - start - 1).position, number: number)
   })
 
   diagram.update(diagram => {
-    diagram.moves = diagram.moves + moves
+    diagram.stones = diagram.stones + moves
     diagram.numbers = diagram.numbers + numbers
     diagram
   })
@@ -116,6 +116,9 @@
 #let showdiagram(diagram) = context {
   let diagram = diagram.get()
 
+  [#diagram.stones]
+  [#diagram.numbers]
+
   cetz.canvas(length: diagram.diagramsize / diagram.boardsize, {
     import cetz.draw: *
 
@@ -135,6 +138,15 @@
         stroke: diagram.linewidth,
         fill: stone.color
       )
+    }
+
+    for number in diagram.numbers {
+      let stone = diagram.stones.find(s => s.position == number.position)
+      let color = if stone != none and stone.color == black { white } else { black }
+      content(number.position)[
+        #set text(font: "Oswald", fill: color)
+        #number.number
+      ] 
     }
 
     for mark in diagram.marks {
