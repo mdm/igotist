@@ -3,7 +3,7 @@
 #let makediagram(key) = {
   state(key,(
     boardsize: 19,
-    diagramsize: 9.5cm,
+    diagramsize: 9cm,
     linewidth: 0.75pt,
     hoshiradius: 1.5pt,
     stones: (
@@ -73,7 +73,7 @@
     (color: color, position: move)
   })
   let numbers = range(start, start + moves.len()).map(number => {
-    (position: moves.at(number - start - 1).position, number: number)
+    (position: moves.at(number - start).position, number: number)
   })
 
   diagram.update(diagram => {
@@ -120,7 +120,7 @@
   [#diagram.numbers]
 
   cetz.canvas(length: diagram.diagramsize / diagram.boardsize, {
-    import cetz.draw: *
+    import cetz.draw: grid, circle, content, move-to, line
 
     grid((0,0), (diagram.boardsize - 1, diagram.boardsize - 1), stroke: diagram.linewidth)
 
@@ -145,7 +145,9 @@
       let color = if stone != none and stone.color == black { white } else { black }
       content(number.position)[
         #set text(font: "Oswald", fill: color)
-        #number.number
+        #let size = measure([#number.number])
+        #let scalex = calc.min(size.height / size.width, 1)
+        #scale(x: 100% * scalex)[#number.number]
       ] 
     }
 
